@@ -50,8 +50,8 @@ int main(void) {
 		inputValueS2 = GPIOC->PDIR;
 		inputValueS3 = GPIOA->PDIR;
 		/**Masks the GPIOC in the bit of interest*/
-		inputValueS2 = inputValueS2 & 0x40;
-		inputValueS3 = inputValueS3 & 0x10;
+		inputValueS2 &= 0x40;
+		inputValueS3 &= 0x10;
 		/**Note that the comparison is not inputValur == False, because it is safer if we switch the arguments*/
 
 		if(FALSE == inputValueS2)
@@ -65,8 +65,8 @@ int main(void) {
 				inputValueS2 = GPIOC->PDIR;
 				inputValueS3 = GPIOA->PDIR;
 				/**Masks the GPIOC in the bit of interest*/
-				inputValueS2 = inputValueS2 & 0x40;
-				inputValueS3 = inputValueS3 & 0x10;
+				inputValueS2 &= 0x40;
+				inputValueS3 &= 0x10;
 				if((FALSE == inputValueS2) && (FALSE == inputValueS3))
 				{
 					color_c--;
@@ -77,7 +77,7 @@ int main(void) {
 					while((FALSE == inputValueS3))
 					{
 						inputValueS3 = GPIOA->PDIR;
-						inputValueS3 = inputValueS3 & 0x10;
+						inputValueS3 &= 0x10;
 					}
 				}
 			}
@@ -94,8 +94,8 @@ int main(void) {
 				inputValueS2 = GPIOC->PDIR;
 				inputValueS3 = GPIOA->PDIR;
 				/**Masks the GPIOC in the bit of interest*/
-				inputValueS2 = inputValueS2 & 0x40;
-				inputValueS3 = inputValueS3 & 0x10;
+				inputValueS2 &= 0x40;
+				inputValueS3 &= 0x10;
 				if((FALSE == inputValueS2) && (FALSE == inputValueS3))
 				{
 					color_c++;
@@ -107,7 +107,7 @@ int main(void) {
 					{
 
 						inputValueS2 = GPIOC->PDIR;
-						inputValueS2 = inputValueS2 & 0x40;
+						inputValueS2 &= 0x40;
 					}
 				}
 			}
