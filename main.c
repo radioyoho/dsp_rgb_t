@@ -9,11 +9,20 @@
 
 void choose_color(int);
 void delay(uint16 delay);
+void green();
+void blue();
+void purple();
+void red();
+void yellow();
+void (*fp[NUM_COLORS])() = {green,blue,purple,red,yellow};
+
+
 /*
  * @brief   Application entry point.
  */
 int main(void) {
 	/**Variable to capture the input value*/
+
 	uint32 inputValueS2 = 0;
 	uint32 inputValueS3 = 0;
 	uint8 color_c = 0;
@@ -44,6 +53,7 @@ int main(void) {
 	/**Configures GPIOE pin26 as output*/
 	GPIOE->PDDR |= 0x04000000;
 
+
     while(1)
     {
     	//copia valor en sw2 Y sw3
@@ -58,7 +68,7 @@ int main(void) {
 		{
 			color_c++;
 
-			choose_color(color_c%NUM_COLORES);
+			(*fp[color_c%NUM_COLORES])();
 
 			while(FALSE == inputValueS2)
 			{
@@ -87,7 +97,7 @@ int main(void) {
 		{
 			color_c--;
 
-			choose_color(color_c%NUM_COLORES);
+			(*fp[color_c%NUM_COLORES])();
 
 			while(FALSE == inputValueS3)
 			{
@@ -119,42 +129,38 @@ int main(void) {
 ////////////////////////////////////////////////////////////////////////////////
 // EOF
 ////////////////////////////////////////////////////////////////////////////////
-void delay(uint16 delay)
-{
-	volatile uint16 counter;
 
-	for(counter=delay; counter > 0; counter--)
-	{
-	}
+void green()
+{
+	GPIOB->PDOR |= 0x00200000;/**Blue led off*/
+	GPIOB->PDOR |= 0x00400000;/**Read led off*/
+	GPIOE->PDOR &= ~(0x4000000);
 }
 
-void choose_color(int color){
-	switch(color)
-				{
-				case 0:
-					GPIOB->PDOR |= 0x00200000;/**Blue led off*/
-					GPIOB->PDOR |= 0x00400000;/**Read led off*/
-					GPIOE->PDOR &= ~(0x4000000);
-				break;
-				case 1:
-					GPIOB->PDOR |= 0x00400000;/**Read led off*/
-					GPIOE->PDOR |= 0x4000000;/**Green led off*/
-					GPIOB->PDOR &= ~(0x00200000);/**Blue led on*/
-				break;
-				case 2:
-					GPIOE->PDOR |= 0x4000000;/**Green led off*/
-					GPIOB->PDOR &= ~(0x00400000);/**Read led on*/
-					GPIOB->PDOR &= ~(0x00200000);/**Blue led on*/
-				break;
-				case 3:
-					GPIOB->PDOR &= ~(0x00400000);/**Read led on*/
-					GPIOB->PDOR |= 0x00200000;/**Blue led off*/
-					GPIOE->PDOR |= 0x4000000;/**Green led off*/
-				break;
-				case 4:
-					GPIOB->PDOR &= ~(0x00400000);/**Read led on*/
-					GPIOE->PDOR &= ~(0x4000000);/**Green led on*/
-					GPIOB->PDOR |= 0x00200000;/**Blue led off*/
-				break;
-				}
+void blue()
+{
+	GPIOB->PDOR |= 0x00400000;/**Read led off*/
+	GPIOE->PDOR |= 0x4000000;/**Green led off*/
+	GPIOB->PDOR &= ~(0x00200000);/**Blue led on*/
+}
+
+void purple()
+{
+	GPIOE->PDOR |= 0x4000000;/**Green led off*/
+	GPIOB->PDOR &= ~(0x00400000);/**Read led on*/
+	GPIOB->PDOR &= ~(0x00200000);/**Blue led on*/
+}
+
+void red()
+{
+	GPIOB->PDOR &= ~(0x00400000);/**Read led on*/
+	GPIOB->PDOR |= 0x00200000;/**Blue led off*/
+	GPIOE->PDOR |= 0x4000000;/**Green led off*/
+}
+
+void yellow()
+{
+	GPIOB->PDOR &= ~(0x00400000);/**Read led on*/
+	GPIOE->PDOR &= ~(0x4000000);/**Green led on*/
+	GPIOB->PDOR |= 0x00200000;/**Blue led off*/
 }
